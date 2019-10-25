@@ -27,6 +27,7 @@ const NameEntry = () => {
             result = addName(name, state);
             if (!result.error) {
                 dispatch({
+                    ...state,
                     names: result
                 });
                 setNameState('');
@@ -42,12 +43,13 @@ const NameEntry = () => {
                 <input type='text' name='name' id='name' onChange={onChange} value={ nameState }/>
                 <button type='submit' onClick={onSubmit}>Submit</button>
             </form>
-            {state.names.length &&
+            {(state.names || []).length &&
                 <ul id='links'>
                     {
-                        state.names.map(aUser => {
-                            return <li>{aUser.name}: {window.location
-                                .protocol}://{window.location
+                        state.names.map((aUser, aIndex) => {
+                            return <li key={aIndex}>{aUser.name}: {window.location
+                                // eslint-disable-next-line react/jsx-no-comment-textnodes
+                                .protocol}//{window.location
                                     .host}/{aUser.hash}</li>
                         })
                     }

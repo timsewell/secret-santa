@@ -6,21 +6,27 @@ import axios from 'axios';
 const NameDisplay = () => {
     const { state, dispatch } = useContext(SantaContext);
 
-    const fetchState = async () => {
-        console.log('run')
-        const result = axios.get(config.api).then((aResponse => {
-            if (aResponse) {
-                return aResponse.data;
-            }
-        }));
-        dispatch({
-            names: result
+    const fetchState = () => {
+        let result;
+
+        axios.get(config.api).then(aResponse => {
+            // if (aResponse.data) {
+            //     result = aResponse.data;
+            //     dispatch({
+            //         names: result
+            //     });
+            // }
+            console.log(aResponse.data);
+            dispatch({
+                names: aResponse.data
+            });
         });
     };
     useEffect(() => {
         fetchState();
     }, []);
-console.log(state)
-    return <div>{ state.names.map(aName => aName.name) }</div>;
+
+
+    return <div></div>;
 };
 export default NameDisplay;
