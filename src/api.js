@@ -23,3 +23,11 @@ export const addName = async (aName = '', aState) => {
         }
     });
 };
+
+export const deleteName = aNames => {
+    return new Promise(resolve => {
+        axios.put(config.api, aNames).then(() => {
+            resolve(aNames);
+        });
+    });
+};

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { SantaContext } from "./context";
-import { addName } from "./api";
+import { addName, deleteName } from "./api";
 
 const NameEntry = () => {
     const { state, dispatch } = useContext(SantaContext);
@@ -36,6 +36,21 @@ const NameEntry = () => {
         }
     };
 
+    const onDelete = async aEvent => {
+        const hash = aEvent.target.dataset.hash;
+
+        const { names } = state;
+
+        const newNames = names.filter(aName => aName.hash !== hash);
+
+        aEvent.preventDefault();
+
+        const result = await deleteName(newNames);
+        dispatch({
+            names: result
+        });
+    };
+
     return (
         <>
             <form>
@@ -43,15 +58,18 @@ const NameEntry = () => {
                 <input type='text' name='name' id='name' onChange={onChange} value={ nameState }/>
                 <button type='submit' onClick={onSubmit}>Submit</button>
             </form>
-            {state.names.length &&
+            {state.names.length > 1 &&
                 <ul id='links'>
                     {
                         state.names.map((aUser, aIndex) => {
-                            return <li key={ aUser.hash }>{ aUser.name }: { window.location
-                                // eslint-disable-next-line react/jsx-no-comment-textnodes
-                                .protocol }//{window.location
-                                    .host }/{ aUser.hash }</li>
-                        })
+                            if (aUser.name !== 'admin') {
+                                return <li key={ aUser.hash }>{ aUser.name }: { window.location
+                                    // eslint-disable-next-line react/jsx-no-comment-textnodes
+                                    .protocol }//{window.location
+                                    .host }/{ aUser.hash }
+                                    <a className='btn btn--delete' href='' onClick={ onDelete } data-hash={ aUser.hash }>Delete</a></li>
+                            }
+                        }).filter(aLi => aLi)
                     }
             </ul>
             }
