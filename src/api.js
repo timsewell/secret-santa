@@ -5,23 +5,21 @@ import md5 from 'md5';
 export const addName = async (aName = '', aState) => {
     const hash = md5(aName);
 
-    let ret;
+    return new Promise((resolve) => {
+        let ret;
 
-    if (aName.length) {
-        const data = {
-            name: aName,
-            hash: hash,
-            allocated: false,
-            visited: false,
-        };
+        if (aName.length) {
+            const data = {
+                name: aName,
+                hash: hash,
+                allocated: false,
+                visited: false,
+            };
 
-        aState.names.push(data);
-        axios.put(config.api, aState.names).then(aResponse => {
-            ret = aResponse.data;
-        });
-        return ret;
-
-    }
-
-
+            aState.names.push(data);
+            axios.put(config.api, aState.names).then(aResponse => {
+                resolve(aState);
+            });
+        }
+    });
 };

@@ -24,11 +24,11 @@ const NameEntry = () => {
 
         aEvent.preventDefault();
         if (name.length) {
-            result = addName(name, state);
+            result = await addName(name, state);
+            console.log(result);
             if (!result.error) {
                 dispatch({
-                    ...state,
-                    names: result
+                    ...result
                 });
                 setNameState('');
                 setMessage('Name added successfully.');
@@ -43,14 +43,14 @@ const NameEntry = () => {
                 <input type='text' name='name' id='name' onChange={onChange} value={ nameState }/>
                 <button type='submit' onClick={onSubmit}>Submit</button>
             </form>
-            {(state.names || []).length &&
+            {state.names.length &&
                 <ul id='links'>
                     {
                         state.names.map((aUser, aIndex) => {
-                            return <li key={aIndex}>{aUser.name}: {window.location
+                            return <li key={ aUser.hash }>{ aUser.name }: { window.location
                                 // eslint-disable-next-line react/jsx-no-comment-textnodes
-                                .protocol}//{window.location
-                                    .host}/{aUser.hash}</li>
+                                .protocol }//{window.location
+                                    .host }/{ aUser.hash }</li>
                         })
                     }
             </ul>
