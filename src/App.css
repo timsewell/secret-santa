@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-size:14px;
 }
 
 .App-logo {
@@ -21,3 +22,49 @@
 .App-link {
   color: #09d3ac;
 }
+
+#links {
+  width: 80%;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  list-style-type: none;
+  text-align:left;
+}
+
+li {
+  width:calc(100% + 40px);
+  height:30px;
+  border-bottom:1px solid #ccc;
+  margin-left:-40px;
+  padding:16px 0 10px 10px;
+}
+
+li:last-child {
+  border:none;
+}
+
+.btn {
+  padding:5px 10px;
+  text-align:center;
+  border:1px solid #FA130C;
+  border-radius:5px;
+  text-decoration:none;
+  color:#FA130C;
+}
+
+.btn--primary {
+  color:#fff;
+  background-color:#FA130C;
+}
+
+textarea {
+  visibility:hidden;
+}
+
+#links li .btn {
+  float:right;
+  margin: -4px 23px 0 auto;
+}
+
+
+

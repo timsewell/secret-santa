@@ -1,13 +1,18 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { SantaContext } from "./context";
 import { addName, deleteName } from "./api";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const NameEntry = () => {
     const { state, dispatch } = useContext(SantaContext);
 
     const [nameState, setNameState] = useState('');
 
+    const [copyState, setCopyState] = useState('');
+
     const [message, setMessage] = useState('');
+
+    const textareaRef = useRef(null);
 
     const onChange = aEvent => {
         const name = aEvent.target.value;
@@ -51,11 +56,20 @@ const NameEntry = () => {
         });
     };
 
+    const onCopy = aEvent => {
+        aEvent.preventDefault();
+        setCopyState(`${window.location.protocol}//${window.location.host}/${aEvent.target.dataset.hash}`);
+    };
+
     return (
         <>
             <form>
                 <label htmlFor='name'>Enter name: </label>
-                <input type='text' name='name' id='name' onChange={onChange} value={ nameState }/>
+                <input type='text'
+                       name='name'
+                       id='name'
+                       onChange={onChange}
+                       value={ nameState }/>
                 <button type='submit' onClick={onSubmit}>Submit</button>
             </form>
             {state.names.length > 1 &&
@@ -63,16 +77,26 @@ const NameEntry = () => {
                     {
                         state.names.map((aUser, aIndex) => {
                             if (aUser.name !== 'admin') {
-                                return <li key={ aUser.hash }>{ aUser.name }: { window.location
-                                    // eslint-disable-next-line react/jsx-no-comment-textnodes
-                                    .protocol }//{window.location
-                                    .host }/{ aUser.hash }
-                                    <a className='btn btn--delete' href='' onClick={ onDelete } data-hash={ aUser.hash }>Delete</a></li>
+                                return <li key={ aUser.hash }>{ aUser.name }
+                                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                    <a className='btn btn--delete'
+                                       href=''
+                                       onClick={ onDelete }
+                                       data-hash={ aUser.hash }>
+                                        Delete
+                                    </a>
+                                    <CopyToClipboard text={`${window.location.protocol}//${window.location.host}/${aUser.hash}`}>
+                                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                        <button className='btn btn--primary'>Copy to clipboard</button>
+                                    </CopyToClipboard>
+                                </li>
                             }
                         }).filter(aLi => aLi)
                     }
             </ul>
             }
+            <textarea defaultValue={ copyState } ref={textareaRef} />
+
         </>)
 };
 
