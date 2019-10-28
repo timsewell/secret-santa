@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { SantaContext } from "./context";
 import { addName, deleteName, fetchNames } from "./api";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { initialise, addToLIst, getAllUsers, deleteFromList } from "./db";
 
 const NameEntry = () => {
     const { state, dispatch } = useContext(SantaContext);
@@ -17,11 +18,22 @@ const NameEntry = () => {
     };
 
     const fetchState = async () => {
-        const names = await fetchNames();
+        const names = await getAllUsers();
+
+        const toState = [];
+
+        names.forEach(aDocument => {
+            const data = aDocument.data();
+
+            if (data.name !== 'admin') {
+                data.id = aDocument.id;
+                toState.push(data);
+            }
+        });
 
         dispatch({
             ...state,
-            names: names.filter(aName => aName.name !== 'admin')
+            names: toState
         });
     };
 
@@ -32,32 +44,20 @@ const NameEntry = () => {
 
         aEvent.preventDefault();
         if (name.length) {
-            result = await addName(name, state);
-            if (!result.error) {
-                dispatch({
-                    ...result
-                });
-                setNameState('');
-            }
+            await addToLIst(name);
+            fetchState();
         }
     };
 
     const onDelete = async aEvent => {
-        const hash = aEvent.target.dataset.hash;
-
-        const { names } = state;
-
-        const newNames = names.filter(aName => aName.hash !== hash);
-
-        const result = await deleteName(newNames);
-
         aEvent.preventDefault();
-        dispatch({
-            names: result
-        });
+
+        await deleteFromList(aEvent.target.dataset.id);
+        fetchState();
     };
 
     useEffect(() => {
+        initialise();
         fetchState();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -73,32 +73,31 @@ const NameEntry = () => {
                        value={ nameState }/>
                 <button type='submit' onClick={onSubmit}>Submit</button>
             </form>
-            { state.names.length > 1 &&
-                <ul id='links'>
-                        {
-                            state.names.map((aUser) => {
-                                if (aUser.name !== 'admin') {
-                                    return <li key={aUser.hash}>{aUser.name}
-                                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                        <a className='btn btn--delete'
-                                           href=''
-                                           onClick={onDelete}
-                                           data-hash={aUser.hash}>
-                                            Delete
-                                        </a>
-                                        <CopyToClipboard text={`${window.location
-                                            .protocol}//${window.location
-                                            .host}/${aUser.hash}`}>
-                                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                            <button className='btn btn--primary'>
-                                                Copy to clipboard
-                                            </button>
-                                        </CopyToClipboard>
-                                    </li>
-                                }
-                            }).filter(aLi => aLi)
+            {state.names.length > 1 &&
+            <ul id='links'>
+                {
+                    state.names.map((aUser) => {
+                        if (aUser.name !== 'admin') {
+                            return <li key={aUser.hash}>{aUser.name}
+                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                <a className='btn btn--delete'
+                                   href=''
+                                   onClick={onDelete}
+                                   data-id={aUser.id}>
+                                    Delete
+                                </a>
+                                <CopyToClipboard text={`${window.location
+                                    .protocol}//${window.location
+                                    .host}/${aUser.hash}`}>
+                                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                    <button className='btn btn--primary'>
+                                        Copy to clipboard
+                                    </button>
+                                </CopyToClipboard>
+                            </li>
                         }
-                    }
+                    }).filter(aLi => aLi)
+                }
             </ul>
             }
         </>)

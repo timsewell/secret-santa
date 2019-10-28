@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { SantaContext } from "./context";
 import { fetchNames, saveState } from "./api";
 import loadingSanta from './assets/santa-gif.gif';
+import { initialise} from "./db";
 
 const NameDisplay = (props) => {
     const { state, dispatch } = useContext(SantaContext);
@@ -85,6 +86,7 @@ const NameDisplay = (props) => {
 
     useEffect(() => {
         if (firstRender.current) {
+            initialise();
             firstRender.current = false;
             return;
         }
