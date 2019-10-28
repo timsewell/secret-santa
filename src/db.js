@@ -36,3 +36,9 @@ export const getAllUsers = () => {
 export const deleteFromList = aId => {
     return db.collection('users').doc(aId).delete();
 };
+
+export const editUser = (aId, aAllocated) => {
+    return db.collection('users').doc(aId).set({
+        allocated: btoa(aAllocated)
+    }, { merge : true });
+};

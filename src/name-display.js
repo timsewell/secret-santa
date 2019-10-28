@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { SantaContext } from "./context";
 import { fetchNames, saveState } from "./api";
 import loadingSanta from './assets/santa-gif.gif';
-import { initialise} from "./db";
+import { initialise, getAllUsers, editUser } from "./db";
 
 const NameDisplay = (props) => {
     const { state, dispatch } = useContext(SantaContext);
@@ -14,31 +14,45 @@ const NameDisplay = (props) => {
     const firstRender = useRef(true);
 
     const fetchState = async () => {
-        const names = await fetchNames();
+        const names = await getAllUsers();
+
+        const toState = [];
+
+        names.forEach(aDocument => {
+            const data = aDocument.data();
+
+            if (data.name !== 'admin') {
+                data.id = aDocument.id;
+                toState.push(data);
+            }
+        });
 
         dispatch({
             ...state,
-            names: names
+            names: toState
         });
-        showCurrentUser(names);
     };
 
-    const showCurrentUser = (aNames) => {
+    const showCurrentUser = () => {
         const hash = props.location.pathname.slice(1);
 
         let currentUser, allocatedUser;
 
         if (hash && hash.length) {
-            currentUser = aNames.find(aUser => aUser.hash === hash);
+            currentUser = state.names.find(aUser => aUser.hash === hash);
             if (currentUser) {
                 setCurrentUser(currentUser);
                 if (currentUser.allocated) {
                     allocatedUser = atob(currentUser.allocated);
-                    setAllocated({ name: aNames
+                    setAllocated({ name: state.names
                             .find(aUser => aUser.hash === allocatedUser).name });
                 }
             }
         }
+    };
+
+    const allocateUserInDb = () => {
+        editUser(currentUser.id, allocated.hash);
     };
 
     const shakeTheHat = () => {
@@ -78,6 +92,12 @@ const NameDisplay = (props) => {
     }, []);
 
     useEffect(() => {
+        if (!currentUser) {
+            showCurrentUser();
+        }
+    }, [state.names]);
+
+    useEffect(() => {
         if (state.names.length && currentUser && !currentUser.allocated) {
             shakeTheHat();
         }
@@ -85,14 +105,19 @@ const NameDisplay = (props) => {
     }, [currentUser]);
 
     useEffect(() => {
+        initialise();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
         if (firstRender.current) {
-            initialise();
             firstRender.current = false;
             return;
         }
-        saveState(state);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.names]);
+        if (!currentUser.allocated) {
+            allocateUserInDb();
+        }
+    }, [allocated]);
 
     return <>
         { currentUser && allocated &&
