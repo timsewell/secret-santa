@@ -66,5 +66,35 @@ textarea {
   margin: -4px 23px 0 auto;
 }
 
+.name-display {
+  font-size:1.5em;
+}
+
+.current-user {
+  color:#FA130C;
+}
+
+.allocated-user {
+  color:#FA130C;
+  opacity:1;
+  transition: opacity, 1s;
+}
+
+.loading {
+  position: absolute;
+  top: 38%;
+  left: calc(50% - 97px);
+  z-index: 2;
+}
+
+.loading img {
+  height:150px;
+}
+
+.loading.done img {
+  opacity:0;
+  transition: opacity 1s;
+}
+
 
 

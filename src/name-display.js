@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { SantaContext } from "./context";
 import { fetchNames, saveState } from "./api";
+import loadingSanta from './assets/santa-gif.gif';
 
 const NameDisplay = (props) => {
     const { state, dispatch } = useContext(SantaContext);
@@ -71,7 +72,7 @@ const NameDisplay = (props) => {
     };
 
     useEffect(() => {
-        fetchState();
+        setTimeout(fetchState, 1000);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -93,11 +94,22 @@ const NameDisplay = (props) => {
 
     return <>
         { currentUser && allocated &&
-        (<div>
-                Hi { (currentUser || {}).name }.
-            You are buying a present for { (allocated || {}).name }
+        (
+            <div className='name-display'>
+                <p>Hi</p>
+                <p className='current-user'>
+                    { (currentUser || {}).name }
+                </p>
+                <p>You are buying a present for</p>
+                <p className='allocated-user'>
+                    { (allocated || {}).name }
+                </p>
             </div>)
         }
+        {/* eslint-disable-next-line no-mixed-operators */}
+            <div className={ currentUser && allocated ? 'done loading' : 'loading'}>
+                <img alt='loading' src={ loadingSanta } />
+            </div>
         </>
 };
 export default NameDisplay;

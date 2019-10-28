@@ -5,7 +5,6 @@ const initialState = { names: [] };
 export const SantaContext = React.createContext(initialState);
 
 const reducer = (state, action) => {
-    console.log(action);
     return {
         ...state,
         ...action

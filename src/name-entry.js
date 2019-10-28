@@ -21,7 +21,7 @@ const NameEntry = () => {
 
         dispatch({
             ...state,
-            names: names
+            names: names.filter(aName => aName.name !== 'admin')
         });
     };
 
@@ -73,31 +73,31 @@ const NameEntry = () => {
                        value={ nameState }/>
                 <button type='submit' onClick={onSubmit}>Submit</button>
             </form>
-            {state.names.length > 1 &&
+            { state.names.length > 1 &&
                 <ul id='links'>
-                    {
-                        // eslint-disable-next-line array-callback-return
-                        state.names.map((aUser) => {
-                            if (aUser.name !== 'admin') {
-                                return <li key={ aUser.hash }>{ aUser.name }
-                                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                    <a className='btn btn--delete'
-                                       href=''
-                                       onClick={ onDelete }
-                                       data-hash={ aUser.hash }>
-                                        Delete
-                                    </a>
-                                    <CopyToClipboard text={`${window.location
-                                        .protocol}//${window.location
-                                            .host}/${aUser.hash}`}>
+                        {
+                            state.names.map((aUser) => {
+                                if (aUser.name !== 'admin') {
+                                    return <li key={aUser.hash}>{aUser.name}
                                         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                        <button className='btn btn--primary'>
-                                            Copy to clipboard
-                                        </button>
-                                    </CopyToClipboard>
-                                </li>
-                            }
-                        }).filter(aLi => aLi)
+                                        <a className='btn btn--delete'
+                                           href=''
+                                           onClick={onDelete}
+                                           data-hash={aUser.hash}>
+                                            Delete
+                                        </a>
+                                        <CopyToClipboard text={`${window.location
+                                            .protocol}//${window.location
+                                            .host}/${aUser.hash}`}>
+                                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                            <button className='btn btn--primary'>
+                                                Copy to clipboard
+                                            </button>
+                                        </CopyToClipboard>
+                                    </li>
+                                }
+                            }).filter(aLi => aLi)
+                        }
                     }
             </ul>
             }
