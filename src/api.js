@@ -6,9 +6,7 @@ export const addName = async (aName = '', aState) => {
     const hash = md5(aName);
 
     return new Promise((resolve) => {
-        let ret;
-
-        if (aName.length) {
+         if (aName.length) {
             const data = {
                 name: aName,
                 hash: hash,
@@ -24,10 +22,24 @@ export const addName = async (aName = '', aState) => {
     });
 };
 
+export const saveState = (aState) => {
+    axios.put(config.api, aState.names);
+};
+
 export const deleteName = aNames => {
     return new Promise(resolve => {
         axios.put(config.api, aNames).then(() => {
             resolve(aNames);
+        });
+    });
+};
+
+export const fetchNames = () => {
+    return new Promise(resolve => {
+        axios.get(config.api).then(aResponse => {
+            if (aResponse.data) {
+                resolve(aResponse.data);
+            }
         });
     });
 };

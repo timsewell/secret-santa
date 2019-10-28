@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { SantaContext } from "./context";
-import { addName, deleteName } from "./api";
+import { addName, deleteName, fetchNames } from "./api";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const NameEntry = () => {
@@ -8,18 +8,21 @@ const NameEntry = () => {
 
     const [nameState, setNameState] = useState('');
 
-    const [copyState, setCopyState] = useState('');
-
-    const [message, setMessage] = useState('');
-
-    const textareaRef = useRef(null);
-
     const onChange = aEvent => {
         const name = aEvent.target.value;
 
         if (name.length) {
             setNameState(name);
         }
+    };
+
+    const fetchState = async () => {
+        const names = await fetchNames();
+
+        dispatch({
+            ...state,
+            names: names
+        });
     };
 
     const onSubmit = async aEvent => {
@@ -30,13 +33,11 @@ const NameEntry = () => {
         aEvent.preventDefault();
         if (name.length) {
             result = await addName(name, state);
-            console.log(result);
             if (!result.error) {
                 dispatch({
                     ...result
                 });
                 setNameState('');
-                setMessage('Name added successfully.');
             }
         }
     };
@@ -48,18 +49,18 @@ const NameEntry = () => {
 
         const newNames = names.filter(aName => aName.hash !== hash);
 
-        aEvent.preventDefault();
-
         const result = await deleteName(newNames);
+
+        aEvent.preventDefault();
         dispatch({
             names: result
         });
     };
 
-    const onCopy = aEvent => {
-        aEvent.preventDefault();
-        setCopyState(`${window.location.protocol}//${window.location.host}/${aEvent.target.dataset.hash}`);
-    };
+    useEffect(() => {
+        fetchState();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>
@@ -75,7 +76,8 @@ const NameEntry = () => {
             {state.names.length > 1 &&
                 <ul id='links'>
                     {
-                        state.names.map((aUser, aIndex) => {
+                        // eslint-disable-next-line array-callback-return
+                        state.names.map((aUser) => {
                             if (aUser.name !== 'admin') {
                                 return <li key={ aUser.hash }>{ aUser.name }
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -85,9 +87,13 @@ const NameEntry = () => {
                                        data-hash={ aUser.hash }>
                                         Delete
                                     </a>
-                                    <CopyToClipboard text={`${window.location.protocol}//${window.location.host}/${aUser.hash}`}>
+                                    <CopyToClipboard text={`${window.location
+                                        .protocol}//${window.location
+                                            .host}/${aUser.hash}`}>
                                         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                        <button className='btn btn--primary'>Copy to clipboard</button>
+                                        <button className='btn btn--primary'>
+                                            Copy to clipboard
+                                        </button>
                                     </CopyToClipboard>
                                 </li>
                             }
@@ -95,8 +101,6 @@ const NameEntry = () => {
                     }
             </ul>
             }
-            <textarea defaultValue={ copyState } ref={textareaRef} />
-
         </>)
 };
 
