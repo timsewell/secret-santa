@@ -5,19 +5,22 @@ let db;
 
 export const initialise = () => {
     return new Promise(resolve => {
-        if (!db) {
+        if (!firebase.apps.length) {
             firebase.initializeApp({
                 apiKey: "AIzaSyCv81qQ2g1cCiUPALTKz7H3bAzLpi3NxKA",
                 authDomain: "kirstyssecretsanta-a8538.firebaseapp.com",
                 projectId: 'kirstyssecretsanta-a8538'
-            }).then(resolve());
-
+            });
+            db = firebase.firestore();
+            resolve();
+        }
+        else {
             db = firebase.firestore();
         }
     });
 };
 
-export const addToLIst = aUserName => {
+export const addToLIst = (aUserName, aEmail) => {
     const hash = md5(aUserName);
 
     if (aUserName.length) {
@@ -26,8 +29,10 @@ export const addToLIst = aUserName => {
             hash: hash,
             allocated: false,
             visited: false,
+            email: aEmail,
+            sent: false
         };
-        db.collection("users").add(data).then(docRef => console.log(docRef));
+        return db.collection("users").add(data);
     }
 };
 
@@ -46,11 +51,17 @@ export const editUser = (aId, aAllocated) => {
 };
 
 export const signIn = (aEmail, aPassword) => {
-    firebase.auth().signInWithEmailAndPassword(aEmail, aPassword).catch(function(error) {
+    return firebase.auth().signInWithEmailAndPassword(aEmail, aPassword).catch(function(error) {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(error);
         // ...
     });
+};
+
+export const signOut = () => {
+    if (firebase.auth().currentUser) {
+        return firebase.auth().signOut();
+    }
 };
