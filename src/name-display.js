@@ -40,10 +40,13 @@ const NameDisplay = (props) => {
 
         if (hash && hash.length) {
             currentUser = state.names.find(aUser => aUser.hash === hash);
+            console.log(currentUser);
+            console.log(state);
             if (currentUser) {
                 setCurrentUser(currentUser);
                 if (currentUser.allocated) {
                     allocatedUser = atob(currentUser.allocated);
+                    console.log(allocatedUser);
                     setAllocated({ name: state.names
                             .find(aUser => aUser.hash === allocatedUser).name });
                 }
@@ -92,7 +95,7 @@ const NameDisplay = (props) => {
     }, []);
 
     useEffect(() => {
-        if (!currentUser) {
+        if (!currentUser && state.names.length) {
             showCurrentUser();
         }
     }, [state.names]);

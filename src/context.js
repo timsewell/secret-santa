@@ -1,6 +1,6 @@
 import React from 'react';
 
-const initialState = { names: [] };
+const initialState = { names: [], user: { email: '', signedIn: false } };
 
 export const SantaContext = React.createContext(initialState);
 
