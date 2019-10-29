@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { SantaContext } from "./context";
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { initialise, addToLIst, getAllUsers, deleteFromList, signOut } from "./db";
+import { initialise, addToLIst, getAllUsers, deleteFromList, signOut, sendEmail } from "./db";
 import { Redirect } from "react-router";
 
 const NameEntry = () => {
@@ -60,17 +59,25 @@ const NameEntry = () => {
                 names.push(data);
                 dispatch({
                     ...state,
-                    names: names
+                    names
                 });
             }
         }
     };
 
     const onDelete = async aEvent => {
+        const names = state.names;
+
+        let newNames;
+
         aEvent.preventDefault();
 
         await deleteFromList(aEvent.target.dataset.id);
-        fetchState();
+        newNames = names.filter(aUser => aUser.hash !== aEvent.dataset.hash);
+        dispatch({
+            ...state,
+            names: newNames
+        });
     };
 
     const onSignOut = async aEvent => {
@@ -84,6 +91,27 @@ const NameEntry = () => {
                 email: ''
             }
         });
+    };
+
+    const onSendEmail = async aEvent => {
+        const names = state.names;
+
+        const user = names.find(aUser => aUser.hash === aEvent
+            .target.dataset.hash);
+
+        let result;
+
+        if (user) {
+            result = await sendEmail(user);
+            if (result && !result.error) {
+                user.sent = true;
+                console.log(names);
+                dispatch({
+                    ...state,
+                    names: names
+                });
+            }
+        }
     };
 
     useEffect(() => {
@@ -112,7 +140,8 @@ const NameEntry = () => {
                            onChange={onChange}
                            value={ formState.email }/>
                 </div>
-                <button type='submit' onClick={onSubmit}>Submit</button>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <a href='#' className='btn btn--primary' onClick={onSubmit}>Submit</a>
             </form>
             {state.names.length > 1 &&
                 <>
@@ -124,19 +153,26 @@ const NameEntry = () => {
                                     <a className='btn btn--delete'
                                        href=''
                                        onClick={onDelete}
-                                       data-id={aUser.id}>
+                                       data-id={aUser.id}
+                                       data-hash={aUser.hash}>
                                         Delete
                                     </a>
-                                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                        <button className='btn btn--primary'>
-                                            Copy to clipboard
-                                        </button>
+                                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                    <a className='btn btn--primary'
+                                       onClick={ onSendEmail }
+                                       data-hash={ aUser.hash }>
+                                        { aUser.sent ? 'Send email again' : 'Send email' }
+                                    </a>
                                 </li>
                             })
                         }
                     </ul>
                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                    <a href='#' onClick={ onSignOut } className='btn btn--primary'>Sign out</a>
+                    <a href='#'
+                       onClick={ onSignOut }
+                       className='btn btn--primary'>
+                        Sign out
+                    </a>
                 </>
             }
         </>)

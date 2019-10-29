@@ -65,3 +65,19 @@ export const signOut = () => {
         return firebase.auth().signOut();
     }
 };
+
+export const sendEmail = (aUser) => {
+    const link = `${window.location.protocol}:${window.location
+        .host}/${aUser.hash}`;
+
+    return db.collection('mail').add({
+        to: aUser.email,
+        message: {
+            subject: 'Invitation to our Secret Santa!',
+            html: `Hi<br>
+                Want to join the Secret Santa?<br>
+                Visit <a href="${link}">${link}</a>.
+                <br>Cheers!<br>The Secret Santa Machine xx`,
+        },
+    });
+};
