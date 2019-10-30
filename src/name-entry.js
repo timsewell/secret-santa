@@ -20,26 +20,6 @@ const NameEntry = () => {
         });
     };
 
-    const fetchState = async () => {
-        const names = await getAllUsers();
-
-        const toState = [];
-
-        names.forEach(aDocument => {
-            const data = aDocument.data();
-
-            if (data.name !== 'admin') {
-                data.id = aDocument.id;
-                toState.push(data);
-            }
-        });
-
-        dispatch({
-            ...state,
-            names: toState
-        });
-    };
-
     const onSubmit = async aEvent => {
         const name = formState.name;
 
@@ -105,7 +85,6 @@ const NameEntry = () => {
             result = await sendEmail(user);
             if (result && !result.error) {
                 user.sent = true;
-                console.log(names);
                 dispatch({
                     ...state,
                     names: names
@@ -113,12 +92,6 @@ const NameEntry = () => {
             }
         }
     };
-
-    useEffect(() => {
-        initialise();
-        fetchState();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <>

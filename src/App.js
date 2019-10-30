@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
-import santa from './assets/santa.png';
 import { SantaProvider } from "./context";
 import NameDisplay from "./name-display";
 import NameEntry from "./name-entry";
 import { Switch, Route, withRouter } from 'react-router-dom';
 import SignIn from './sign-in';
+import Header from './header';
 import './App.css';
 
 function App() {
@@ -23,12 +23,7 @@ function App() {
       <Suspense loading={'loading...'}>
           <SantaProvider>
             <div className="App">
-              <header className="App-header">
-                <img src={santa} className="App-logo" alt="logo" />
-                <p>
-                  The Secret Santa Machine
-                </p>
-              </header>
+              <Header />
                 { routes }
             </div>
           </SantaProvider>

@@ -13,26 +13,6 @@ const NameDisplay = (props) => {
 
     const firstRender = useRef(true);
 
-    const fetchState = async () => {
-        const names = await getAllUsers();
-
-        const toState = [];
-
-        names.forEach(aDocument => {
-            const data = aDocument.data();
-
-            if (data.name !== 'admin') {
-                data.id = aDocument.id;
-                toState.push(data);
-            }
-        });
-
-        dispatch({
-            ...state,
-            names: toState
-        });
-    };
-
     const showCurrentUser = () => {
         const hash = props.location.pathname.slice(1);
 
@@ -40,13 +20,10 @@ const NameDisplay = (props) => {
 
         if (hash && hash.length) {
             currentUser = state.names.find(aUser => aUser.hash === hash);
-            console.log(currentUser);
-            console.log(state);
             if (currentUser) {
                 setCurrentUser(currentUser);
                 if (currentUser.allocated) {
                     allocatedUser = atob(currentUser.allocated);
-                    console.log(allocatedUser);
                     setAllocated({ name: state.names
                             .find(aUser => aUser.hash === allocatedUser).name });
                 }
@@ -55,7 +32,8 @@ const NameDisplay = (props) => {
     };
 
     const allocateUserInDb = () => {
-        editUser(currentUser.id, allocated.hash);
+        console.log(currentUser);
+        editUser(currentUser.id, allocated.name);
     };
 
     const shakeTheHat = () => {
@@ -79,8 +57,9 @@ const NameDisplay = (props) => {
                 allocatedUser = unallocated[rand];
                 setAllocated(allocatedUser);
             }
-            currentUser.allocated = btoa(allocatedUser.hash);
+            currentUser.allocated = allocatedUser.name;
             setCurrentUser(buyer);
+            allocateUserInDb();
             dispatch({
                 ...state,
                 names: state.names.map(aName => aName.hash === currentUser
@@ -88,11 +67,6 @@ const NameDisplay = (props) => {
             });
         }
     };
-
-    useEffect(() => {
-        setTimeout(fetchState, 1000);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     useEffect(() => {
         if (!currentUser && state.names.length) {
@@ -106,21 +80,6 @@ const NameDisplay = (props) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentUser]);
-
-    useEffect(() => {
-        initialise();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        if (firstRender.current) {
-            firstRender.current = false;
-            return;
-        }
-        if (!currentUser.allocated) {
-            allocateUserInDb();
-        }
-    }, [allocated]);
 
     return <>
         { currentUser && allocated &&
