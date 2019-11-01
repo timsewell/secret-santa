@@ -31,14 +31,15 @@ export const addToLIst = (aUserName, aEmail) => {
             beingBoughtFor: false,
             visited: false,
             email: aEmail,
-            sent: false
+            sent: false,
+            added: firebase.firestore.FieldValue.serverTimestamp()
         };
         return db.collection("users").add(data);
     }
 };
 
 export const getAllUsers = () => {
-    return db.collection("users").get();
+    return db.collection("users").orderBy('added', 'desc').get();
 };
 
 export const deleteFromList = aId => {

@@ -10,15 +10,19 @@ const NameDisplay = (props) => {
 
     const [allocated, setAllocated] = useState(null);
 
+    const [usersAvailable, setUsersAvailable] = useState(true);
+
     const showCurrentUser = () => {
         const hash = props.location.pathname.slice(1);
 
-        let currentUser, allocatedUser;
+        let currentUser, allocatedUser, visits;
 
         if (hash && hash.length) {
             currentUser = state.names.find(aUser => aUser.hash === hash);
             if (currentUser) {
+                visits = currentUser.visited || 0;
                 setCurrentUser(currentUser);
+                editUser(currentUser.id, visits + 1, 'visited');
                 if (currentUser.buyingFor) {
                     allocatedUser = currentUser.buyingFor;
                     setAllocated({ name: state.names
@@ -32,8 +36,8 @@ const NameDisplay = (props) => {
         editUser(currentUser.id, aAllocatedUser.hash, 'buyingFor');
     };
 
-    const shakeTheHat = () => {
-        const unallocated = state.names.filter(aUser => !aUser.buyingFor
+    const shakeTheHat = async () => {
+        const unallocated = state.names.filter(aUser => !aUser.beingBoughtFor
             && aUser.hash !== (currentUser || {}).hash);
 
         const length = unallocated.length;
@@ -50,17 +54,26 @@ const NameDisplay = (props) => {
                 setAllocated(allocatedUser);
             }
             else {
-                allocatedUser = unallocated[rand];
-                setAllocated(allocatedUser);
+                if (unallocated.length) {
+                    allocatedUser = unallocated[rand];
+                    setAllocated(allocatedUser);
+                }
             }
-            currentUser.buyingFor = allocatedUser.hash;
-            setCurrentUser(buyer);
-            allocateUserInDb(allocatedUser);
-            dispatch({
-                ...state,
-                names: state.names.map(aName => aName.hash === currentUser
-                    .hash ? currentUser : aName)
-            });
+            if (allocatedUser) {
+                currentUser.buyingFor = allocatedUser.hash;
+                allocatedUser.beingBoughtFor = currentUser.hash;
+                setCurrentUser(buyer);
+                await editUser(currentUser.id, allocatedUser.hash, 'buyingFor');
+                await editUser(allocatedUser.id, currentUser.hash, 'beingBoughtFor');
+                dispatch({
+                    ...state,
+                    names: state.names.map(aName => aName.hash === currentUser
+                        .hash ? currentUser : aName)
+                });
+            }
+        }
+        else {
+            setUsersAvailable(false);
         }
     };
 
@@ -80,7 +93,7 @@ const NameDisplay = (props) => {
     return <>
         { currentUser && allocated &&
         (
-            <div className='name-display'>
+            <><div className='name-display'>
                 <p>Hi</p>
                 <p className='current-user'>
                     { (currentUser || {}).name }
@@ -89,12 +102,16 @@ const NameDisplay = (props) => {
                 <p className='allocated-user'>
                     { (allocated || {}).name }
                 </p>
-            </div>)
-        }
-        {/* eslint-disable-next-line no-mixed-operators */}
+            </div>
             <div className={ currentUser && allocated ? 'done loading' : 'loading'}>
                 <img alt='loading' src={ loadingSanta } />
+            </div></>)
+        }
+        { currentUser && !usersAvailable &&
+            <div className='no-users'>
+                <p>Sorry { currentUser.name }, nobody's available for you to buy for right now. Maybe try again tomorrow?</p>
             </div>
+        }
         </>
 };
 export default NameDisplay;

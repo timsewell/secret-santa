@@ -11,26 +11,6 @@ const SignIn = () => {
         password: ''
     });
 
-    const boot = async () => {
-        await initialise();
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                dispatch({
-                    ...state,
-                    user: {
-                        email: user.email,
-                        signedIn: true
-                    }
-                });
-            } else {
-                dispatch({
-                    ...state,
-                    signedIn: false
-                });
-            }
-        });
-    };
-
     const { state, dispatch } = useContext(SantaContext);
 
     const onChangeEmail = aEvent => {
@@ -67,11 +47,6 @@ const SignIn = () => {
         }
     };
 
-    useEffect(() => {
-        boot();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
         <>
         { state.user.signedIn && <Redirect to='/add-names' /> }
@@ -87,7 +62,7 @@ const SignIn = () => {
                         <input type='password' id='password' name='password' onChange={ onChangePassword } value={ formState.password }/>
                     </div>
                     <div className='form-control'>
-                        <button type='submit' id='submit' name='submit' onClick={ onSubmit }>
+                        <button type='submit' className='btn btn--primary' id='submit' name='submit' onClick={ onSubmit }>
                             Sign in
                         </button>
                     </div>

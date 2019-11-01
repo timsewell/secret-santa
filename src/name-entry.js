@@ -36,10 +36,14 @@ const NameEntry = () => {
             if (data && typeof data === 'object') {
                 data = data.data();
                 data.id = result.id;
-                names.push(data);
+                names.unshift(data);
                 dispatch({
                     ...state,
                     names
+                });
+                setFormState({
+                    name: '',
+                    email: ''
                 });
             }
         }
@@ -48,12 +52,14 @@ const NameEntry = () => {
     const onDelete = async aEvent => {
         const names = state.names;
 
+        const { target } = aEvent;
+
         let newNames;
 
         aEvent.preventDefault();
 
-        await deleteFromList(aEvent.target.dataset.id);
-        newNames = names.filter(aUser => aUser.hash !== aEvent.dataset.hash);
+        await deleteFromList(target.dataset.id);
+        newNames = names.filter(aUser => aUser.hash !== target.dataset.hash);
         dispatch({
             ...state,
             names: newNames
@@ -85,8 +91,7 @@ const NameEntry = () => {
             result = await sendEmail(user);
             if (result && !result.error) {
                 user.sent = true;
-
-
+                editUser(user.id, true, 'sent');
                 dispatch({
                     ...state,
                     names: names
@@ -118,22 +123,31 @@ const NameEntry = () => {
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a href='#' className='btn btn--primary' onClick={onSubmit}>Submit</a>
             </form>
-            {state.names.length > 1 &&
+            {state.names.length ?
                 <>
                     <ul id='links'>
                         {
                             state.names.map((aUser) => {
-                                return <li key={aUser.hash}>{aUser.name}
+                                const showDelete = !aUser.visited && !aUser
+                                    .beingBoughtFor;
+                                return <li key={aUser.hash}>
+                                    {aUser.visited &&
+                                        <span className='visits'>{ aUser.visited }</span>
+                                    }
+                                    {aUser.name}
+                                    { showDelete &&
+                                    // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                                        <a className='delete'
+                                            href=''
+                                            onClick={onDelete}
+                                            data-id={aUser.id}
+                                            data-hash={aUser.hash}>
+                                            X
+                                        </a>
+                                    }
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                    <a className='btn btn--delete'
-                                       href=''
-                                       onClick={onDelete}
-                                       data-id={aUser.id}
-                                       data-hash={aUser.hash}>
-                                        Delete
-                                    </a>
-                                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                    <a className='btn btn--primary'
+                                    <a className={'btn btn--primary' +
+                                    ((!showDelete) ? ' no-delete' : '')}
                                        onClick={ onSendEmail }
                                        data-hash={ aUser.hash }>
                                         { aUser.sent ? 'Send email again' : 'Send email' }
@@ -143,13 +157,19 @@ const NameEntry = () => {
                         }
                     </ul>
                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                    <a href='#'
-                       onClick={ onSignOut }
-                       className='btn btn--primary'>
-                        Sign out
-                    </a>
+                    <>
+                        <div className='action-container'>
+                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                            <a href='#'
+                               onClick={ onSignOut }
+                               className='btn btn--primary btn--sign-out'>
+                                Sign out
+                            </a>
+                        </div>
+                    </>
                 </>
-            }
+            :
+                <div className='no-users-yet'><p>No users yet</p>Why not add some?</div>}
         </>)
 };
 
