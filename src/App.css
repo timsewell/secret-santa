@@ -213,7 +213,7 @@ fieldset {
     }
 
     #links {
-        margin:20px 10%;
+        margin:20px auto 100px 10%;
     }
 
     .action-container {
