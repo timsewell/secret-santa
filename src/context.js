@@ -1,6 +1,8 @@
 import React from 'react';
 
-const initialState = { names: [], user: { email: '', signedIn: JSON.parse(sessionStorage.getItem('signedIn') || '') || false } };
+const signedIn = sessionStorage.getItem('signedIn') || 'false';
+
+const initialState = { names: [], user: { email: '', signedIn: JSON.parse(signedIn) || false } };
 
 export const SantaContext = React.createContext(initialState);
 
