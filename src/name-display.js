@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { SantaContext } from "./context";
-import { fetchNames, saveState } from "./api";
 import loadingSanta from './assets/santa-gif.gif';
-import { initialise, getAllUsers, editUser } from "./db";
+import { editUser } from "./db";
 
 const NameDisplay = (props) => {
     const { state, dispatch } = useContext(SantaContext);
@@ -10,8 +9,6 @@ const NameDisplay = (props) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     const [allocated, setAllocated] = useState(null);
-
-    const firstRender = useRef(true);
 
     const showCurrentUser = () => {
         const hash = props.location.pathname.slice(1);
@@ -22,8 +19,8 @@ const NameDisplay = (props) => {
             currentUser = state.names.find(aUser => aUser.hash === hash);
             if (currentUser) {
                 setCurrentUser(currentUser);
-                if (currentUser.allocated) {
-                    allocatedUser = atob(currentUser.allocated);
+                if (currentUser.buyingFor) {
+                    allocatedUser = currentUser.buyingFor;
                     setAllocated({ name: state.names
                             .find(aUser => aUser.hash === allocatedUser).name });
                 }
@@ -31,13 +28,12 @@ const NameDisplay = (props) => {
         }
     };
 
-    const allocateUserInDb = () => {
-        console.log(currentUser);
-        editUser(currentUser.id, allocated.name);
+    const allocateUserInDb = (aAllocatedUser) => {
+        editUser(currentUser.id, aAllocatedUser.hash, 'buyingFor');
     };
 
     const shakeTheHat = () => {
-        const unallocated = state.names.filter(aUser => !aUser.allocated
+        const unallocated = state.names.filter(aUser => !aUser.buyingFor
             && aUser.hash !== (currentUser || {}).hash);
 
         const length = unallocated.length;
@@ -57,9 +53,9 @@ const NameDisplay = (props) => {
                 allocatedUser = unallocated[rand];
                 setAllocated(allocatedUser);
             }
-            currentUser.allocated = allocatedUser.name;
+            currentUser.buyingFor = allocatedUser.hash;
             setCurrentUser(buyer);
-            allocateUserInDb();
+            allocateUserInDb(allocatedUser);
             dispatch({
                 ...state,
                 names: state.names.map(aName => aName.hash === currentUser
@@ -75,7 +71,7 @@ const NameDisplay = (props) => {
     }, [state.names]);
 
     useEffect(() => {
-        if (state.names.length && currentUser && !currentUser.allocated) {
+        if (state.names.length && currentUser && !currentUser.buyingFor) {
             shakeTheHat();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

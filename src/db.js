@@ -27,7 +27,8 @@ export const addToLIst = (aUserName, aEmail) => {
         const data = {
             name: aUserName,
             hash: hash,
-            allocated: false,
+            buyingFor: false,
+            beingBoughtFor: false,
             visited: false,
             email: aEmail,
             sent: false
@@ -44,9 +45,9 @@ export const deleteFromList = aId => {
     return db.collection('users').doc(aId).delete();
 };
 
-export const editUser = (aId, aAllocated) => {
+export const editUser = (aId, aData, aField) => {
     return db.collection('users').doc(aId).set({
-        allocated: aAllocated
+        [aField]: aData
     }, { merge : true });
 };
 

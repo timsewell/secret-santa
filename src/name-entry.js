@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { SantaContext } from "./context";
-import { initialise, addToLIst, getAllUsers, deleteFromList, signOut, sendEmail } from "./db";
+import { editUser, addToLIst, getAllUsers, deleteFromList, signOut, sendEmail } from "./db";
 import { Redirect } from "react-router";
 
 const NameEntry = () => {
@@ -85,6 +85,8 @@ const NameEntry = () => {
             result = await sendEmail(user);
             if (result && !result.error) {
                 user.sent = true;
+
+
                 dispatch({
                     ...state,
                     names: names
