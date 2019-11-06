@@ -10,6 +10,8 @@ const NameDisplay = (props) => {
 
     const [allocated, setAllocated] = useState(null);
 
+    const [showName, setShowName] = useState('');
+
     const [usersAvailable, setUsersAvailable] = useState(true);
 
     const showCurrentUser = () => {
@@ -80,6 +82,9 @@ const NameDisplay = (props) => {
     useEffect(() => {
         if (!currentUser && state.names.length) {
             showCurrentUser();
+            setTimeout(() => {
+                setShowName('show');
+            }, 500);
         }
     }, [state.names]);
 
@@ -93,19 +98,21 @@ const NameDisplay = (props) => {
     return <>
         { currentUser && allocated &&
         (
-            <><div className='name-display'>
-                <p>Hi</p>
-                <p className='current-user'>
-                    { (currentUser || {}).name }
-                </p>
-                <p>You are buying a present for</p>
-                <p className='allocated-user'>
-                    { (allocated || {}).name }
-                </p>
-            </div>
-            <div className={ currentUser && allocated ? 'done loading' : 'loading'}>
-                <img alt='loading' src={ loadingSanta } />
-            </div></>)
+            <>
+                <div className='name-display'>
+                    <div className='text-container'>
+                        <p>Hi</p>
+                        <p className='current-user'>
+                            { (currentUser || {}).name }
+                        </p>
+                        <p>You are buying a present for</p>
+                        {/* eslint-disable-next-line no-useless-concat */}
+                        <p className={'allocated-user' + ' ' + showName}>
+                            { (allocated || {}).name }
+                        </p>
+                    </div>
+                </div>
+            </>)
         }
         { currentUser && !usersAvailable &&
             <div className='no-users'>

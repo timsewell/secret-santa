@@ -32,11 +32,18 @@ const Header = () => {
     }, []);
     
     return (
-        <header className="App-header">
-            <img src={santa} className="App-logo" alt="logo" />
-            <p>
-                The Secret Santa Machine
-            </p>
-        </header>)
+        <>
+            { state.user.signedIn ?
+                    <header className="App-header">
+                        <img src={santa} className="App-logo" alt="logo" />
+                        <p>
+                            The Secret Santa Machine
+                        </p>
+                    </header>
+            :
+                <header className='App visitor'> </header>
+            }
+            </>
+        )
 };
 export default Header;

@@ -3,6 +3,10 @@
   font-size:14px;
 }
 
+.App.visitor {
+    display:none;
+}
+
 .App-logo {
   height: 40vmin;
 }
@@ -14,6 +18,7 @@
     justify-content: center;
     font-size: 2em;
     color: #FA130C;
+    background-color:transparent;
     font-weight:bold;
     width:70%;
     margin-left:15%;
@@ -50,12 +55,13 @@ p {
 }
 
 .btn {
-  padding:5px 10px;
-  text-align:center;
-  border:1px solid #FA130C;
-  border-radius:5px;
-  text-decoration:none;
-  color:#FA130C;
+    padding:5px 10px;
+    text-align:center;
+    border:1px solid #FA130C;
+    border-radius:5px;
+    text-decoration:none;
+    color:#FA130C;
+    cursor:pointer;
 }
 
 .btn--primary {
@@ -82,12 +88,39 @@ p {
 .name-display {
     font-size:1.5em;
     font-weight:bold;
-    margin:30px auto;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    position:absolute;
+    background:url(./assets/background-mobile.jpg) no-repeat right fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top:35%;
+}
+
+.text-container {
+    width:80%;
+    height:70%;
+    background: rgba(51, 51, 51, 0.75);
+    z-index:1;
+    position:absolute;
+    top:15%;
+    left:10%;
+    padding:10px 20px;
+    box-sizing:border-box;
+}
+
+.name-display p {
+    color: white;
+    font-size:2em;
 }
 
 .current-user {
-    color:#FA130C;
-    font-size:2em;
+    color:#FA130C!important;
+    font-size:3em!important;
     margin:0 auto;
 }
 
@@ -105,11 +138,15 @@ p {
 }
 
 .allocated-user {
-    color:#FA130C;
-    opacity:1;
-    transition: opacity, 1s;
-    font-size:2em;
+    color:#FA130C!important;
+    opacity:0;
+    font-size:3em!important;
     margin:0 auto;
+}
+
+.allocated-user.show {
+    opacity:1;
+    transition: opacity, 2s;
 }
 
 .loading {
@@ -226,6 +263,14 @@ fieldset {
         float:none;
         margin:0;
     }
+
+    .name-display {
+        background:url(./assets/background.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 }
 
 @media only screen and (max-width: 320px) {
@@ -244,6 +289,10 @@ fieldset {
 
     #links {
         margin-left:12px;
+    }
+
+    .text-container p {
+        font-size:1.6em!important;
     }
 
     #links li {
