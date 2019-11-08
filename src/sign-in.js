@@ -50,23 +50,32 @@ const SignIn = () => {
     return (
         <>
         { state.user.signedIn && <Redirect to='/add-names' /> }
-            <div className='sign-in'>
-                Sign in
-                <fieldset>
+            <div className='sign-in container'>
+                <h1>Secret Santa Machine</h1>
+                <p className='form-title'>Sign in</p>
                     <div className='form-control'>
-                        <label htmlFor='email'>Email address:</label>
-                        <input type='text' id='email' name='email'  onChange={ onChangeEmail } value={ formState.email }/>
+                        <input type='text'
+                               id='email'
+                               name='email'
+                               onChange={ onChangeEmail }
+                               value={ formState.email }
+                               placeholder='Email'
+                        />
                     </div>
                     <div className='form-control'>
-                        <label htmlFor='password'>Password:</label>
-                        <input type='password' id='password' name='password' onChange={ onChangePassword } value={ formState.password }/>
+                        <input type='password'
+                               id='password'
+                               name='password'
+                               onChange={ onChangePassword }
+                               value={ formState.password }
+                               placeholder='Password'
+                        />
                     </div>
                     <div className='form-control'>
                         <button type='submit' className='btn btn--primary' id='submit' name='submit' onClick={ onSubmit }>
                             Sign in
                         </button>
                     </div>
-                </fieldset>
             </div>
         </>
     )

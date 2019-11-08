@@ -317,6 +317,12 @@ fieldset {
         width:34%;
     }
 
+    .btn--primary#submit {
+        float: none;
+        margin-top: 30px;
+        margin-left: 6px;
+    }
+
     fieldset {
         margin-top:20px;
     }
