@@ -321,20 +321,24 @@ fieldset {
         margin-top:20px;
     }
 
-    input {
-        width:47%!important;
-    }
-
-    #links {
-        margin-left:12px;
-    }
-
     .text-container p {
         font-size:1.6em!important;
     }
 
     #links li {
-        width: calc(100% + 30px);
+        height:95px;
+    }
+
+    #links li .btn {
+        margin:-75px 5px 0 auto;
+    }
+
+    .delete {
+        margin-top:20px;
+    }
+
+    #links .user-visits {
+        margin-top:20px;
     }
 
     .btn--primary.no-delete {
