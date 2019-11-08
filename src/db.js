@@ -39,6 +39,9 @@ export const addToLIst = (aUserName, aEmail) => {
 };
 
 export const getAllUsers = () => {
+    if (process.env.NODE_ENV === 'development') {
+        return fetch('http://localhost:9000/users').then(aResponse => aResponse.json());
+    }
     return db.collection("users").orderBy('added', 'desc').get();
 };
 

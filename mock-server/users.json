@@ -1,0 +1,64 @@
+{
+  "users": [
+    {
+      "name": "Fred Smith",
+      "hash": "abcdef",
+      "buyingFor": false,
+      "beingBoughtFor": false,
+      "visited": false,
+      "email": "sewell.tim@gmail.com",
+      "sent": false,
+      "added": "blah"
+    },
+    {
+      "name": "Lola",
+      "hash": "abcdef",
+      "buyingFor": false,
+      "beingBoughtFor": false,
+      "visited": false,
+      "email": "sewell.tim@gmail.com",
+      "sent": false,
+      "added": "blah"
+    },
+    {
+      "name": "Fred Bloggs",
+      "hash": "abcdef",
+      "buyingFor": false,
+      "beingBoughtFor": false,
+      "visited": false,
+      "email": "sewell.tim@gmail.com",
+      "sent": false,
+      "added": "blah"
+    },
+    {
+      "name": "Sally",
+      "hash": "abcdef",
+      "buyingFor": false,
+      "beingBoughtFor": false,
+      "visited": false,
+      "email": "sewell.tim@gmail.com",
+      "sent": false,
+      "added": "blah"
+    },
+    {
+      "name": "Millie",
+      "hash": "abcdef",
+      "buyingFor": false,
+      "beingBoughtFor": false,
+      "visited": false,
+      "email": "sewell.tim@gmail.com",
+      "sent": false,
+      "added": "blah"
+    },
+    {
+      "name": "Martha",
+      "hash": "abcdef",
+      "buyingFor": false,
+      "beingBoughtFor": false,
+      "visited": false,
+      "email": "sewell.tim@gmail.com",
+      "sent": false,
+      "added": "blah"
+    }
+  ]
+}

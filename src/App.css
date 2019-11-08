@@ -1,93 +1,4 @@
 .App {
-  text-align: center;
-  font-size:14px;
-}
-
-.App.visitor {
-    display:none;
-}
-
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-    min-height: 20%;
-    margin-top:5%;
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
-    color: #FA130C;
-    background-color:transparent;
-    font-weight:bold;
-    width:70%;
-    margin-left:15%;
-}
-
-.App-link {
-  color: #09d3ac;
-}
-
-#links {
-  width: 80%;
-  margin: 20px;
-    margin-bottom:80px;
-  border: 1px solid #ccc;
-  list-style-type: none;
-  text-align:left;
-  float:left;
-}
-
-li {
-  width:calc(100% + 40px);
-  height:30px;
-  border-bottom:1px solid #ccc;
-  margin-left:-40px;
-  padding:16px 0 10px 10px;
-}
-
-li:last-child {
-  border:none;
-}
-
-p {
-    margin:10px auto;
-}
-
-.btn {
-    padding:5px 10px;
-    text-align:center;
-    border:1px solid #FA130C;
-    border-radius:5px;
-    text-decoration:none;
-    color:#FA130C;
-    cursor:pointer;
-}
-
-.btn--primary {
-  color:#fff;
-  background-color:#FA130C;
-  float:right;
-  margin-right:20px;
-}
-
-.btn--primary#submit {
-    float:none;
-    margin-top:30px;
-}
-
-.btn--primary.no-delete {
-    margin-right:20px!important;
-}
-
-#links li .btn {
-  float:right;
-  margin: -4px 10px 0 auto;
-}
-
-.name-display {
-    font-size:1.5em;
-    font-weight:bold;
     top:0;
     left:0;
     bottom:0;
@@ -101,7 +12,96 @@ p {
     padding-top:35%;
 }
 
-.text-container {
+.App-link {
+  color: #09d3ac;
+}
+
+#links {
+    width: 100%;
+    margin-left:0;
+    margin-bottom:100px;
+    border: 1px solid #ccc;
+    list-style-type: none;
+    text-align:left;
+    float:left;
+    padding:0;
+    background-color:#ffffff;
+}
+
+li {
+  width:100%;
+  height:80px;
+  border-bottom:1px solid #ccc;
+}
+
+li:last-child {
+  border:none;
+}
+
+.user-name {
+    display:inline-block;
+    margin:10px;
+    float:left;
+    font-weight:bold;
+}
+
+p {
+    margin:10px auto;
+}
+
+h1 {
+    font-size: 1.5em;
+    color: red;
+    margin-left: 10px;
+}
+
+.btn {
+    padding:10px;
+    text-align:center;
+    border:1px solid #FA130C;
+    text-decoration:none;
+    color:#FA130C;
+    cursor:pointer;
+}
+
+p.form-title {
+    margin-left: 2.5%;
+    color: white;
+    font-size: inherit;
+    font-weight: bold;
+}
+
+.btn--primary {
+  color:#fff;
+  background-color:#FA130C;
+  float:right;
+  margin-right:2.5%;
+}
+
+.btn--primary#submit {
+    float:none;
+    margin-top:30px;
+}
+
+.btn--primary.no-delete {
+    margin-right:20px!important;
+}
+
+#links li .btn {
+  float:right;
+  margin: -17px 10px 0 auto;
+}
+
+a.btn--primary:active {
+    background-color:#FA736B;
+}
+
+.name-display {
+    font-size:1.5em;
+    font-weight:bold;
+}
+
+.text-container, .container {
     width:80%;
     height:70%;
     background: rgba(51, 51, 51, 0.75);
@@ -111,6 +111,16 @@ p {
     left:10%;
     padding:10px 20px;
     box-sizing:border-box;
+}
+
+.container {
+    width: 90%;
+    height: 106%;
+    left: 5%;
+    bottom: 0;
+    position: fixed;
+    overflow-y: auto;
+    top: 0;
 }
 
 .name-display p {
@@ -129,6 +139,7 @@ p {
     float:left;
     text-align:center;
     margin-top:30px;
+    color:#ffffff;
 }
 
 .no-users-yet p {
@@ -169,7 +180,7 @@ p {
   float:left;
   clear:left;
   width:100%;
-  height:40px;
+  height:auto;
 }
 
 label {
@@ -179,12 +190,29 @@ label {
   text-align: left;
 }
 input[type=text], input[type=email], input[type=password] {
-  width: 50%;
-  float: left;
-  margin-right: 20px;
-  height: 22px;
-  border-radius: 4px;
-  padding-left:10px;
+    width: 95%;
+    margin-left:2.5%;
+    height: 40px;
+    padding-left: 10px;
+    float:left;
+    margin-bottom:10px;
+    box-sizing: border-box;
+    font-size:1em;
+}
+
+.user-visits {
+    margin:4px 5px 0 10px;
+    position:relative;
+    display:inline-block;
+    width:auto;
+    float:left;
+    clear:left;
+}
+
+.user-visits p {
+    position:absolute;
+    top:-8px;
+    left:40px;
 }
 
 .visits {
@@ -202,13 +230,22 @@ input[type=text], input[type=email], input[type=password] {
 }
 
 .delete {
-    float: right;
-    margin: -3px 26px 0 10px;
+    float: left;
+    margin: 4px 0 0 49px;
     font-size: 20px;
     font-weight: bold;
     color: #FA130C;
     text-decoration: none;
     cursor: pointer;
+}
+
+.delete span {
+    color: #333;
+    display: inline-block;
+    font-size: 16px;
+    margin: 3px 0 0 10px;
+    font-weight: normal;
+    vertical-align: top;
 }
 
 .no-users {
@@ -228,7 +265,8 @@ fieldset {
     bottom:0;
     text-align:center;
     height:60px;
-    background-color:white;
+    background-color:rgba(255,255,255,0.8);
+    z-index:5;
 }
 .action-container .btn {
     float:none;

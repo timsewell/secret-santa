@@ -11,8 +11,10 @@ const Header = () => {
 
         const toState = [];
 
+        const dev = process.env.NODE_ENV === 'development';
+
         names.forEach(aDocument => {
-            const data = aDocument.data();
+            const data = dev ? aDocument : aDocument.data();
 
             if (data.name !== 'admin') {
                 data.id = aDocument.id;
@@ -25,25 +27,16 @@ const Header = () => {
             names: toState
         });
     };
-    
+
     useEffect(() => {
         initialise();
         fetchState();
     }, []);
-    
+
     return (
-        <>
-            { state.user.signedIn ?
-                    <header className="App-header">
-                        <img src={santa} className="App-logo" alt="logo" />
-                        <p>
-                            The Secret Santa Machine
-                        </p>
-                    </header>
-            :
-                <header className='App visitor'> </header>
-            }
-            </>
+        <header>
+
+        </header>
         )
 };
 export default Header;

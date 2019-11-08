@@ -103,38 +103,46 @@ const NameEntry = () => {
     return (
         <>
             { !state.user.signedIn && <Redirect to='/' /> }
-            <form>
-                <div className='form-control'>
-                    <label htmlFor='name'>Enter name: </label>
-                    <input type='text'
-                           name='name'
-                           id='name'
-                           onChange={onChange}
-                           value={ formState.name }/>
-                </div>
-                <div className='form-control'>
-                    <label htmlFor='email'>Enter email: </label>
-                    <input type='email'
-                           name='email'
-                           id='email'
-                           onChange={onChange}
-                           value={ formState.email }/>
-                </div>
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a href='#' className='btn btn--primary' onClick={onSubmit}>Submit</a>
-            </form>
-            {state.names.length ?
-                <>
+            <div className='container'>
+                <h1>Secret Santa Machine</h1>
+                <p className='form-title'>Add users</p>
+                <form>
+                    <div className='form-control'>
+                        <input type='text'
+                               placeholder='Name'
+                               name='name'
+                               id='name'
+                               onChange={onChange}
+                               value={ formState.name }/>
+                    </div>
+                    <div className='form-control'>
+                        <input type='email'
+                               placeholder='Email'
+                               name='email'
+                               id='email'
+                               onChange={onChange}
+                               value={ formState.email }/>
+                    </div>
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                    <a href='#' className='btn btn--primary' onClick={onSubmit}>Submit</a>
+                </form>
+                {state.names.length ?
+
                     <ul id='links'>
                         {
                             state.names.map((aUser) => {
                                 const showDelete = !aUser.visited && !aUser
                                     .beingBoughtFor;
+
+                                const visits = aUser.visited || 0;
                                 return <li key={aUser.hash}>
-                                    {aUser.visited &&
-                                        <span className='visits'>{ aUser.visited }</span>
-                                    }
-                                    {aUser.name}
+                                    <span className='user-name'>
+                                        {aUser.name}
+                                    </span>
+                                    <div className='user-visits'>
+                                        <span className='visits'>{ visits }</span>
+                                        <p>visits</p>
+                                    </div>
                                     { showDelete &&
                                     // eslint-disable-next-line jsx-a11y/anchor-is-valid
                                         <a className='delete'
@@ -143,6 +151,7 @@ const NameEntry = () => {
                                             data-id={aUser.id}
                                             data-hash={aUser.hash}>
                                             X
+                                            <span>Delete</span>
                                         </a>
                                     }
                                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -156,21 +165,20 @@ const NameEntry = () => {
                             })
                         }
                     </ul>
-                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                    <>
-                        <div className='action-container'>
-                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <a href='#'
-                               onClick={ onSignOut }
-                               className='btn btn--primary btn--sign-out'>
-                                Sign out
-                            </a>
-                        </div>
-                    </>
-                </>
-            :
-                <div className='no-users-yet'><p>No users yet</p>Why not add some?</div>}
-        </>)
+                :
+                <div className='no-users-yet'><p>No users yet</p>Why not add some?</div>
+                }
+            </div>
+            <div className='action-container'>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <a href='#'
+                   onClick={ onSignOut }
+                   className='btn btn--primary btn--sign-out'>
+                    Sign out
+                </a>
+            </div>
+        </>
+    )
 };
 
 export default NameEntry;
