@@ -355,6 +355,10 @@ fieldset {
         margin-right:15px;
     }
 
+    .action-container .btn {
+        margin:10px 0!important;
+    }
+
 }
 
 
