@@ -282,13 +282,21 @@ fieldset {
         height:auto;
     }
 
+    h1, p.form-title {
+        margin-left:33.5%;
+    }
+    p.form-title {
+        margin-bottom:20px;
+    }
+
+    .container {
+        width:60%;
+        left:20%;
+    }
+
     .form-control {
         width:70%;
         margin:0 15%;
-    }
-
-    #links {
-        margin:20px auto 100px 10%;
     }
 
     .action-container {
@@ -299,7 +307,7 @@ fieldset {
 
     .action-container .btn {
         float:none;
-        margin:0;
+        margin:10px auto 0 auto;
     }
 
     .name-display {
@@ -309,6 +317,11 @@ fieldset {
         -o-background-size: cover;
         background-size: cover;
     }
+
+    .btn--primary {
+        margin-right:17%;
+    }
+
 }
 
 @media only screen and (max-width: 320px) {
@@ -336,7 +349,7 @@ fieldset {
     }
 
     #links li .btn {
-        margin:-28px 5px 0 auto;
+        margin:-75px 5px 0 auto;
     }
 
     .delete {
