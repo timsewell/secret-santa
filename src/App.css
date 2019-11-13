@@ -29,9 +29,10 @@
 }
 
 li {
-  width:100%;
-  height:80px;
-  border-bottom:1px solid #ccc;
+    width:100%;
+    height:80px;
+    border-bottom:1px solid #ccc;
+    position:relative;
 }
 
 li:last-child {
@@ -83,13 +84,10 @@ p.form-title {
     margin-top:30px;
 }
 
-.btn--primary.no-delete {
-    margin-right:20px!important;
-}
-
 #links li .btn {
-  float:right;
-  margin: -17px 10px 0 auto;
+  position:absolute;
+    top:10px;
+    right:0;
 }
 
 a.btn--primary:active {
@@ -319,7 +317,7 @@ fieldset {
     }
 
     .btn--primary {
-        margin-right:17%;
+        margin-right:10px;
     }
 
 }
@@ -348,20 +346,12 @@ fieldset {
         height:95px;
     }
 
-    #links li .btn {
-        margin:-75px 5px 0 auto;
-    }
-
     .delete {
         margin-top:20px;
     }
 
     #links .user-visits {
         margin-top:20px;
-    }
-
-    .btn--primary.no-delete {
-        margin-right:10px!important;
     }
 
     a.delete {

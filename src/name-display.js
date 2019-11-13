@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { SantaContext } from "./context";
 import loadingSanta from './assets/santa-gif.gif';
-import { editUser } from "./db";
+import { editUser, sendEmail } from "./db";
 
 const NameDisplay = (props) => {
     const { state, dispatch } = useContext(SantaContext);
@@ -67,6 +67,9 @@ const NameDisplay = (props) => {
                 setCurrentUser(buyer);
                 await editUser(currentUser.id, allocatedUser.hash, 'buyingFor');
                 await editUser(allocatedUser.id, currentUser.hash, 'beingBoughtFor');
+                currentUser.tempBuyingFor = allocatedUser.name;
+                await sendEmail(currentUser, 2);
+                await editUser(currentUser.id, '', 'email');
                 dispatch({
                     ...state,
                     names: state.names.map(aName => aName.hash === currentUser

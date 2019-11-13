@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import md5 from "md5";
+import emailTemplates from "./emails";
 
 let db;
 
@@ -39,9 +40,9 @@ export const addToLIst = (aUserName, aEmail) => {
 };
 
 export const getAllUsers = () => {
-    if (process.env.NODE_ENV === 'development') {
-        return fetch('http://localhost:9000/users').then(aResponse => aResponse.json());
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //     return fetch('http://localhost:9000/users').then(aResponse => aResponse.json());
+    // }
     return db.collection("users").orderBy('added', 'desc').get();
 };
 
@@ -71,23 +72,15 @@ export const signOut = () => {
     }
 };
 
-export const sendEmail = (aUser) => {
-    const link = `${window.location.protocol}//${window.location
-        .host}/${aUser.hash}`;
+export const sendEmail = (aUser, aEmailIndex) => {
+    const message = emailTemplates(aUser, aEmailIndex);
 
-    return db.collection('mail').add({
+    const email = {
         to: aUser.email,
         name: aUser.name,
-        message: {
-            subject: 'Invitation to our Secret Santa!',
-            html: `Hi ${aUser.name}<br>
-                Want to join the Secret Santa?<br>
-                Visit <a href="${link}">${link}</a>.
-                <br>Cheers!<br>The Secret Santa Machine xx`,
-            text: `Hi\n, 
-                Want to join the Secret Santa?\n
-                Visit ${link}.\n\n
-                Cheers!\nThe Secret Santa Machine xx`
-        }
-    });
+        message: message
+    };
+
+    console.log(email);
+    return db.collection('mail').add(email);
 };

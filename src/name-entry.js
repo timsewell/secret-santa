@@ -85,10 +85,12 @@ const NameEntry = () => {
         const user = names.find(aUser => aUser.hash === aEvent
             .target.dataset.hash);
 
+        const emailIndex = user.sent ? 1 : 0;
+
         let result;
 
         if (user) {
-            result = await sendEmail(user);
+            result = await sendEmail(user, emailIndex);
             if (result && !result.error) {
                 user.sent = true;
                 editUser(user.id, true, 'sent');

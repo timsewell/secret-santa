@@ -11,10 +11,8 @@ const Header = () => {
 
         const toState = [];
 
-        const dev = process.env.NODE_ENV === 'development';
-
         names.forEach(aDocument => {
-            const data = dev ? aDocument : aDocument.data();
+            const data = aDocument.data();
 
             if (data.name !== 'admin') {
                 data.id = aDocument.id;
