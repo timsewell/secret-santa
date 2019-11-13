@@ -156,7 +156,7 @@ const NameEntry = () => {
                                             <span>Delete</span>
                                         </a>
                                     }
-                                    {aUser.email.length &&
+                                    {!!aUser.email.length &&
                                     // eslint-disable-next-line jsx-a11y/anchor-is-valid
                                     <a className={'btn btn--primary' +
                                         ((!showDelete) ? ' no-delete' : '')}
