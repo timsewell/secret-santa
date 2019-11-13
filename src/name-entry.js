@@ -156,13 +156,15 @@ const NameEntry = () => {
                                             <span>Delete</span>
                                         </a>
                                     }
-                                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                    {aUser.email.length &&
+                                    // eslint-disable-next-line jsx-a11y/anchor-is-valid
                                     <a className={'btn btn--primary' +
-                                    ((!showDelete) ? ' no-delete' : '')}
-                                       onClick={ onSendEmail }
-                                       data-hash={ aUser.hash }>
-                                        { aUser.sent ? 'Send email again' : 'Send email' }
+                                        ((!showDelete) ? ' no-delete' : '')}
+                                           onClick={onSendEmail}
+                                           data-hash={aUser.hash}>
+                                            {aUser.sent ? 'Send email again' : 'Send email'}
                                     </a>
+                                    }
                                 </li>
                             })
                         }
