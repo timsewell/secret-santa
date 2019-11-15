@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SantaContext } from "./context";
-import loadingSanta from './assets/santa-gif.gif';
 import { editUser, sendEmail } from "./db";
 
 const NameDisplay = (props) => {
@@ -13,6 +12,8 @@ const NameDisplay = (props) => {
     const [showName, setShowName] = useState('');
 
     const [usersAvailable, setUsersAvailable] = useState(true);
+
+    let nameClass = '';
 
     const showCurrentUser = () => {
         const hash = props.location.pathname.slice(1);
@@ -98,6 +99,13 @@ const NameDisplay = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentUser]);
 
+    if (currentUser && currentUser.name.split(' ').length > 1) {
+        nameClass = ' split';
+    }
+    if (allocated && allocated.name.split(' ').length > 1) {
+        nameClass = ' split';
+    }
+
     return <>
         { currentUser && allocated &&
         (
@@ -105,13 +113,18 @@ const NameDisplay = (props) => {
                 <div className='name-display'>
                     <div className='text-container'>
                         <p>Hi</p>
-                        <p className='current-user'>
+                        <p className={'current-user' + nameClass}>
                             { (currentUser || {}).name }
                         </p>
                         <p>You are buying a present for</p>
                         {/* eslint-disable-next-line no-useless-concat */}
-                        <p className={'allocated-user' + ' ' + showName}>
+                        <p className={'allocated-user' + ' ' + showName + nameClass}>
                             { (allocated || {}).name }
+                        </p>
+                        <p className='rules'>
+                            <strong>Rules:</strong><br />
+                            Gift costing no more than £10.<br />
+                            Must be bought from a charity shop.
                         </p>
                     </div>
                 </div>

@@ -51,6 +51,7 @@ export const deleteFromList = aId => {
 };
 
 export const editUser = (aId, aData, aField) => {
+    // return new Promise(resolve => resolve());
     return db.collection('users').doc(aId).set({
         [aField]: aData
     }, { merge : true });

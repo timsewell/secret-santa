@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { SantaContext } from './context';
 import { getAllUsers, initialise } from './db';
-import santa from './assets/santa.png';
 
 const Header = () => {
     const { state, dispatch } = useContext(SantaContext);
@@ -10,6 +9,8 @@ const Header = () => {
         const names = await getAllUsers();
 
         const toState = [];
+
+        // const dev = process.env.NODE_ENV === 'development';
 
         names.forEach(aDocument => {
             const data = aDocument.data();

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { SantaContext } from "./context";
-import { editUser, addToLIst, getAllUsers, deleteFromList, signOut, sendEmail } from "./db";
+import { editUser, addToLIst, deleteFromList, signOut, sendEmail } from "./db";
 import { Redirect } from "react-router";
 
 const NameEntry = () => {

@@ -50,6 +50,11 @@ p {
     margin:10px auto;
 }
 
+p.rules {
+    font-size:1em!important;
+    font-weight:normal;
+}
+
 h1 {
     font-size: 1.5em;
     color: red;
@@ -101,11 +106,11 @@ a.btn--primary:active {
 
 .text-container, .container {
     width:80%;
-    height:70%;
+    height:95%;
     background: rgba(51, 51, 51, 0.75);
     z-index:1;
     position:absolute;
-    top:15%;
+    top:5%;
     left:10%;
     padding:10px 20px;
     box-sizing:border-box;
@@ -130,6 +135,10 @@ a.btn--primary:active {
     color:#FA130C!important;
     font-size:3em!important;
     margin:0 auto;
+}
+
+.current-user.split {
+    font-size:1.5em!important;
 }
 
 .no-users-yet {
@@ -340,6 +349,14 @@ fieldset {
 
     .text-container p {
         font-size:1.6em!important;
+    }
+
+    .text-container p.allocated-user.split {
+        font-size:1.5em!important;
+    }
+
+    .text-container p.rules {
+        font-size:1em!important;
     }
 
     #links li {
