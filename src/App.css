@@ -47,7 +47,7 @@ li:last-child {
 }
 
 p {
-    margin:10px auto;
+    margin:0 auto;
 }
 
 p.rules {
@@ -106,11 +106,11 @@ a.btn--primary:active {
 
 .text-container, .container {
     width:80%;
-    height:95%;
+    height:100%;
     background: rgba(51, 51, 51, 0.75);
     z-index:1;
     position:absolute;
-    top:5%;
+    top:0;
     left:10%;
     padding:10px 20px;
     box-sizing:border-box;
@@ -356,7 +356,7 @@ fieldset {
     }
 
     .text-container p.rules {
-        font-size:1em!important;
+        font-size:0.75em!important;
     }
 
     #links li {

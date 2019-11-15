@@ -123,7 +123,7 @@ const NameDisplay = (props) => {
                         </p>
                         <p className='rules'>
                             <strong>Rules:</strong><br />
-                            Gift costing no more than £10.<br />
+                            Gift costing no more than £5.<br />
                             Must be bought from a charity shop.
                         </p>
                     </div>
