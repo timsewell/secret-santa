@@ -122,9 +122,15 @@ const NameDisplay = (props) => {
                             { (allocated || {}).name }
                         </p>
                         <p className='rules'>
+<<<<<<< HEAD
                             <strong>Rules:</strong><br />
                             Gift costing no more than £5.<br />
                             Must be bought from a charity shop.
+=======
+                            <strong>Rules of play:</strong><br />
+                            £5 maximum spend.<br />
+                            Present(s) must be purchased from a charity shop.
+>>>>>>> Changed wording.
                         </p>
                     </div>
                 </div>

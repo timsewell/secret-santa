@@ -22,7 +22,7 @@ exports.santaMailer = functions.region('europe-west2')
 
             const sendConfirmation = (aOptions) => {
                 let mailOptions = {
-                    to: 'sewell.tim@gmail.com',
+                    to: 'kirsty.sewell@gmail.com',
                     subject: 'Secret Santa message sent',
                     html: 'Sent to ' + params.name +
                         ' (' + aOptions.to + ') at ' + new Date()
